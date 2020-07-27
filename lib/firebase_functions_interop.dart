@@ -34,6 +34,7 @@ import 'dart:async';
 import 'dart:js';
 
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
+import 'package:js/js_util.dart';
 import 'package:meta/meta.dart';
 import 'package:node_interop/http.dart';
 import 'package:node_interop/node.dart';
@@ -90,6 +91,9 @@ class FirebaseFunctions {
   /// Authentication functions.
   final AuthFunctions auth;
 
+  /// Logger functions.
+  final LoggerFunctions logger;
+
   FirebaseFunctions._(js.FirebaseFunctions functions)
       : _functions = functions,
         config = Config._(functions),
@@ -98,7 +102,8 @@ class FirebaseFunctions {
         firestore = FirestoreFunctions._(functions),
         pubsub = PubsubFunctions._(functions),
         storage = StorageFunctions._(functions),
-        auth = AuthFunctions._(functions);
+        auth = AuthFunctions._(functions),
+        logger = LoggerFunctions._(functions);
 
   /// Configures the regions to which to deploy and run a function.
   ///
@@ -725,4 +730,21 @@ class UserRecord {
 
   /// Returns a JSON-serializable representation of this object.
   dynamic toJson() => dartify(nativeInstance.toJSON());
+}
+
+class LoggerFunctions {
+  final js.FirebaseFunctions _functions;
+
+  LoggerFunctions._(this._functions);
+
+  /// Writes an INFO severity log.
+  /// If the last argument provided is a plain object,
+  /// it is added to the jsonPayload in the Cloud Logging entry.
+  void info1(String s) => _functions.logger.info(s);
+
+  /// Writes an INFO severity log.
+  /// If the last argument provided is a plain object,
+  /// it is added to the jsonPayload in the Cloud Logging entry.
+  void info2(List<dynamic> args) => callMethod(_functions.logger, 'info', args);
+
 }

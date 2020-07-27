@@ -53,6 +53,8 @@ abstract class FirebaseFunctions {
 
   external AuthFunctions get auth;
 
+  external LoggerFunctions get logger;
+
   /// Constructor for Firebase [Event] objects.
   external dynamic get Event;
 }
@@ -489,4 +491,14 @@ abstract class UserRecord {
 
   /// Returns the serialized JSON representation of this object.
   external dynamic toJSON();
+}
+
+@JS()
+@anonymous
+abstract class LoggerFunctions {
+  /// Writes an INFO severity log.
+  /// If the last argument provided is a plain object,
+  /// it is added to the jsonPayload in the Cloud Logging entry.
+  external info(String s);
+
 }

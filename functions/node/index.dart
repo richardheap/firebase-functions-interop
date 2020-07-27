@@ -22,6 +22,8 @@ void main() {
 
 FutureOr<void> httpsTests(ExpressHttpRequest request) {
   print(request.uri.path);
+  functions.logger.info1(request.uri.path); 
+  functions.logger.info2([request.uri.path]);
   switch (request.uri.path) {
     case '/jsonTest':
       return jsonTest(request);
