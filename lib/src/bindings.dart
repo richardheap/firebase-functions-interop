@@ -497,8 +497,17 @@ abstract class UserRecord {
 @anonymous
 abstract class LoggerFunctions {
   /// Writes an INFO severity log.
-  /// If the last argument provided is a plain object,
-  /// it is added to the jsonPayload in the Cloud Logging entry.
-  external info(String s);
+  external log(dynamic s);
 
+  /// Writes an INFO severity log.
+  external info(dynamic s);
+
+    /// Writes an WARN severity log.
+  external warn(dynamic s);
+
+  /// Writes an DEBUG severity log.
+  external debug(dynamic s);
+
+  /// Writes an ERROR severity log.
+  external error(dynamic s);
 }

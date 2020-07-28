@@ -420,9 +420,11 @@ class ScheduleBuilder {
         _handleEvent(jsContext, handler);
     return nativeInstance.onRun(allowInterop(wrapper));
   }
-    
-  dynamic _handleEvent(js.EventContext jsContext,
-      DataEventHandler<Null> handler) {
+
+  dynamic _handleEvent(
+    js.EventContext jsContext,
+    DataEventHandler<Null> handler,
+  ) {
     final context = new EventContext(jsContext);
     var result = handler(null, context);
     if (result is Future) {
@@ -738,13 +740,30 @@ class LoggerFunctions {
   LoggerFunctions._(this._functions);
 
   /// Writes an INFO severity log.
-  /// If the last argument provided is a plain object,
-  /// it is added to the jsonPayload in the Cloud Logging entry.
-  void info1(String s) => _functions.logger.info(s);
+  /// [arg] can be a [dynamic] (single log item)
+  /// or a [List<dynamic>] (multiple log items - separated by spaces)
+  void info(dynamic arg) => _log('info', arg);
 
-  /// Writes an INFO severity log.
-  /// If the last argument provided is a plain object,
-  /// it is added to the jsonPayload in the Cloud Logging entry.
-  void info2(List<dynamic> args) => callMethod(_functions.logger, 'info', args);
+  /// Writes an DEBUG severity log.
+  /// [arg] can be a [dynamic] (single log item)
+  /// or a [List<dynamic>] (multiple log items - separated by spaces)
+  void debug(dynamic arg) => _log('debug', arg);
 
+  /// Writes an ERROR severity log.
+  /// [arg] can be a [dynamic] (single log item)
+  /// or a [List<dynamic>] (multiple log items - separated by spaces)
+  void error(dynamic arg) => _log('error', arg);
+
+  /// Writes an WARN severity log.
+  /// [arg] can be a [dynamic] (single log item)
+  /// or a [List<dynamic>] (multiple log items - separated by spaces)
+  void warn(dynamic arg) => _log('warn', arg);
+
+  void _log(String level, dynamic args) {
+    if (!(args is List)) {
+      // wrap into a list
+      args = [args];
+    }
+    callMethod(_functions.logger, level, args);
+  }
 }
