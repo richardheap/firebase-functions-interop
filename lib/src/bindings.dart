@@ -29,7 +29,7 @@ abstract class FirebaseFunctions {
   /// Configures the regions to which to deploy and run a function.
   ///
   /// For a list of valid values see https://firebase.google.com/docs/functions/locations
-  external FirebaseFunctions region(String region);
+  external FirebaseFunctions region(dynamic region);
 
   /// Configures memory allocation and timeout for a function.
   external FirebaseFunctions runWith(RuntimeOptions options);
